@@ -1,26 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
+import React from 'react'
+import styled, { createGlobalStyle, StyleSheetManager } from 'styled-components'
+import Frame, { FrameContextConsumer } from 'react-frame-component'
 import './App.css';
 
 function App() {
+
+  const GlobalStyle = createGlobalStyle`
+    .wrapper {
+      padding: 1rem;
+    }
+  `
+
+  const Box = styled.div`
+    padding: 1rem;
+    background: #fc0;
+
+    & + & {
+      margin-top: 1rem;
+    }
+  `
+
+  const StyledFrame = styled(Frame)`
+    width: 100vw;
+  `
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <StyledFrame>
+        <FrameContextConsumer>
+          {
+            ({ document }) => (
+              <StyleSheetManager target={ document.head }>
+                <>
+                  <GlobalStyle />
+                  <div className="wrapper">
+                    <h1>iframe</h1>
+                    <Box />
+                    <Box />
+                    <Box />
+                  </div>
+                </>
+              </StyleSheetManager>
+            )
+          }
+        </FrameContextConsumer>
+      </StyledFrame>
     </div>
-  );
+  )
 }
 
 export default App;
